@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoFind | Sustainable Living</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6b705c;
+            --secondary: #a5a58d;
+            --accent: #cb997e;
+            --bg: #fdf6e9;
+            --text: #333;
+            --white: #ffffff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
+        body { background: var(--bg); color: var(--text); overflow-x: hidden; }
+
+        /* --- AUTHENTICATION --- */
+        #auth-container {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(rgba(107, 112, 92, 0.7), rgba(107, 112, 92, 0.7)), 
+                        url('https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&q=80&w=1600');
+            background-size: cover;
+        }
+
+        .auth-card {
+            background: var(--white);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .auth-card h2 { color: var(--primary); margin-bottom: 10px; font-weight: 600; text-transform: lowercase; }
+        .auth-card input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 10px;
+            transition: 0.3s;
+        }
+        .btn:hover { background: var(--secondary); }
+        .toggle-link { font-size: 12px; color: var(--accent); cursor: pointer; margin-top: 15px; display: block; }
+
+        /* --- DASHBOARD --- */
+        #dashboard { display: none; }
+        
+        nav {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 60px; background: white; position: sticky; top: 0; z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .logo { font-size: 24px; font-weight: 600; color: var(--primary); letter-spacing: 2px; text-transform: lowercase; }
+
+        .section-container { padding: 80px 60px; }
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
+        .product-card { background: white; padding: 15px; border-radius: 12px; text-align: center; transition: 0.3s; }
+        .product-card:hover { transform: translateY(-10px); box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+        .product-card img { width: 100%; height: 250px; object-fit: cover; border-radius: 8px; margin-bottom: 15px; }
+
+        /* --- VISION & GOALS SECTION --- */
+        .vision-section {
+            background: var(--white);
+            border-radius: 30px;
+            padding: 60px;
+            margin: 20px 60px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .vision-content h2 { color: var(--primary); margin-bottom: 20px; font-size: 32px; }
+        .vision-content p { color: #666; margin-bottom: 15px; font-size: 16px; line-height: 1.8; }
+        .goal-tag { display: inline-block; background: #e9edc9; color: var(--primary); padding: 5px 15px; border-radius: 20px; font-weight: 600; font-size: 12px; margin-top: 10px; }
+
+        footer { text-align: center; padding: 60px; background: #f0ead2; margin-top: 40px; }
+
+        @media (max-width: 768px) {
+            .vision-section { grid-template-columns: 1fr; margin: 20px; padding: 30px; }
+            nav { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="auth-container">
+        <div class="auth-card" id="login-form">
+            <h2>ecofind</h2>
+            <p style="font-size: 14px; margin-bottom: 20px; color: #777;">Sign in to continue to your dashboard</p>
+            <input type="email" placeholder="Email Address">
+            <input type="password" placeholder="Password">
+            <button class="btn" onclick="showDashboard()">Login</button>
+            <span class="toggle-link" onclick="toggleAuth()">Don't have an account? Register</span>
+        </div>
+
+        <div class="auth-card" id="register-form" style="display: none;">
+            <h2>ecofind</h2>
+            <p style="font-size: 14px; margin-bottom: 20px; color: #777;">Create an account to start your eco-journey</p>
+            <input type="text" placeholder="Full Name">
+            <input type="email" placeholder="Email Address">
+            <input type="password" placeholder="Password">
+            <button class="btn" onclick="showDashboard()">Sign Up</button>
+            <span class="toggle-link" onclick="toggleAuth()">Already have an account? Login</span>
+        </div>
+    </div>
+
+    <div id="dashboard">
+        <nav>
+            <div class="logo">ecofind</div>
+            <button class="btn" style="width: auto; padding: 8px 25px; margin: 0;" onclick="logout()">Logout</button>
+        </nav>
+
+        <header style="text-align:center; padding: 80px 20px 40px;">
+           <h1 data-aos="fade-up" style="font-size: 42px; font-weight: 600; letter-spacing: 3px; text-transform: lowercase;">
+    ecofind
+</h1>
+
+            <p data-aos="fade-up" data-aos-delay="100">Curation for a circular lifestyle.</p>
+        </header>
+
+        <section class="section-container">
+            <div class="product-grid">
+                <div class="product-card" data-aos="zoom-in">
+                    <img src="https://images.unsplash.com/photo-1627915222824-2821a0eaa247?auto=format&fit=crop&q=80&w=600" alt="Flask">
+                    <h4>Bamboo Insulated Flask</h4>
+                    <p style="font-size: 14px; color: #888;">Reusable & Temperature Controlled</p>
+                </div>
+                <div class="product-card" data-aos="zoom-in" data-aos-delay="100">
+                    <img src="https://images.unsplash.com/photo-1607613009820-a29f7bb81c04?auto=format&fit=crop&q=80&w=600" alt="Brush">
+                    <h4>Compostable Toothbrush</h4>
+                    <p style="font-size: 14px; color: #888;">Natural Charcoal Bristles</p>
+                </div>
+                <div class="product-card" data-aos="zoom-in" data-aos-delay="200">
+                    <img src="https://images.unsplash.com/photo-1620916297397-a4a5402a3c6c?auto=format&fit=crop&q=80&w=600" alt="Soap">
+                    <h4>Artisan Hemp Soap</h4>
+                    <p style="font-size: 14px; color: #888;">Cold-pressed & Organic</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="vision-section" data-aos="fade-up">
+            <div class="vision-image">
+                <img src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&q=80&w=800" style="width: 100%; border-radius: 20px;" alt="Sustainability">
+            </div>
+            <div class="vision-content">
+                <span class="goal-tag">Our Vision & Aims</span>
+                <h2>The ecofind Mission</h2>
+                <p>
+                    <strong>ecofind</strong> was founded with a single objective: to make responsible consumption the easiest choice for every household[cite: 22]. We recognize that the current retail market is saturated with single-use plastics and non-biodegradable waste[cite: 19].
+                </p>
+                <p>
+                    Our primary aim is to curate a digital marketplace that exclusively features products verified for their lifecycle impact, ensuring that every purchase supports <strong>SDG 12: Responsible Consumption and Production</strong>[cite: 15, 18].
+                </p>
+                <p>
+                    We strive to eliminate 100% of single-use plastic from the shopping journey, from product material to shipping packaging. Together, we are building a world where products are meant to last or return to the earth[cite: 22].
+                </p>
+            </div>
+        </section>
+
+        <footer>
+            <div class="logo" style="margin-bottom: 20px;">ecofind</div>
+            <p style="font-size: 14px; color: #777;">Curating products for a healthier planet.</p>
+            <p style="margin-top: 15px; font-size: 12px; opacity: 0.6;">Prototype Project for SDG 12 | BCS-MR-4-207 Assignment</p>
+        </footer>
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({ duration: 800, once: true, offset: 100 });
+
+        function toggleAuth() {
+            const login = document.getElementById('login-form');
+            const register = document.getElementById('register-form');
+            if(login.style.display === 'none') {
+                login.style.display = 'block';
+                register.style.display = 'none';
+            } else {
+                login.style.display = 'none';
+                register.style.display = 'block';
+            }
+        }
+
+        function showDashboard() {
+            document.getElementById('auth-container').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'block';
+            window.scrollTo(0, 0);
+        }
+
+        function logout() {
+            document.getElementById('auth-container').style.display = 'flex';
+            document.getElementById('dashboard').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
